@@ -12,7 +12,7 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct CapturePrimaryView: View {
     @EnvironmentObject var appModel: AppDataModel
-    @ObservedObject var session: ObjectCaptureSession
+    var session: ObjectCaptureSession
 
     // Pauses the scanning and shows tutorial pages. This sample passes it as
     // a binding to the two views so buttons can change the state.
@@ -40,22 +40,26 @@ struct CapturePrimaryView: View {
                 OnboardingView(state: onboardingState)
             }
         })
-        .onChange(of: session.userCompletedScanPass, { _, userCompletedScanPass in
-            if userCompletedScanPass {
-                appModel.setPreviewModelState(shown: true)
+        .task {
+            for await userCompletedScanPass in session.userCompletedScanPassUpdates where userCompletedScanPass {
+                    appModel.setPreviewModelState(shown: true)
             }
-        })
-        .onChange(of: appModel.showPreviewModel, { _, showPreviewModel in
+        }
+        .onChange(of: appModel.showPreviewModel, {_, showPreviewModel in
             if !showInfo {
                 showOnboardingView = showPreviewModel
             }
         })
+        .onChange(of: showInfo) {
+            appModel.setPreviewModelState(shown: showInfo)
+        }
         .onAppear(perform: {
             UIApplication.shared.isIdleTimerDisabled = true
         })
         .onDisappear(perform: {
             UIApplication.shared.isIdleTimerDisabled = false
         })
+        .id(session.id)
     }
 
     private var shouldShowOverlayView: Bool {

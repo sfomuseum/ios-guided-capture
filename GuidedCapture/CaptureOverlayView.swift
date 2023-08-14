@@ -12,7 +12,7 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct CaptureOverlayView: View {
     @EnvironmentObject var appModel: AppDataModel
-    @ObservedObject var session: ObjectCaptureSession
+    var session: ObjectCaptureSession
 
     // This sample passes the binding from parent to allow this view
     // to control whether certain panels are shown in `CapturePrimaryView`.
@@ -21,17 +21,13 @@ struct CaptureOverlayView: View {
     @State private var hasDetectionFailed = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var deviceOrientation: UIDeviceOrientation = UIDevice.current.orientation
-    private let orientationChanged = NotificationCenter.default
-        .publisher(for: UIDevice.orientationDidChangeNotification)
-        .makeConnectable()
-        .autoconnect()
 
     var body: some View {
         VStack(spacing: 20) {
             HStack {
                 CancelButton()
                     .opacity(!shouldShowTutorial ? 1 : 0)
-                    .disabled(shouldDisableCancelButton)
+                    .disabled(shouldDisableCancelButton ? true : false)
                 Spacer()
                 NextButton()
                     .opacity(shouldShowNextButton ? 1 : 0)
@@ -110,9 +106,12 @@ struct CaptureOverlayView: View {
                 .rotationEffect(rotationAngle)
             }
         }
-        .onReceive(orientationChanged) { _ in
-            withAnimation {
-                deviceOrientation = UIDevice.current.orientation
+        .task {
+            for await _ in NotificationCenter.default.notifications(named:
+                    UIDevice.orientationDidChangeNotification).map({ $0.name }) {
+                withAnimation {
+                    deviceOrientation = UIDevice.current.orientation
+                }
             }
         }
     }
@@ -158,8 +157,9 @@ struct CaptureOverlayView: View {
 }
 
 @available(iOS 17.0, *)
+@MainActor
 private struct BoundingBoxGuidanceView: View {
-    @ObservedObject var session: ObjectCaptureSession
+    var session: ObjectCaptureSession
     var hasDetectionFailed: Bool
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass

@@ -15,8 +15,9 @@ extension CaptureOverlayView {
                                category: "CaptureOverlayView+Buttons")
 
     @available(iOS 17.0, *)
+    @MainActor
     struct CaptureButton: View {
-        @ObservedObject var session: ObjectCaptureSession
+        var session: ObjectCaptureSession
         var isObjectFlipped: Bool
         @Binding var hasDetectionFailed: Bool
 
@@ -61,7 +62,7 @@ extension CaptureOverlayView {
 
     @available(iOS 17.0, *)
     struct ResetBoundingBoxButton: View {
-        @ObservedObject var session: ObjectCaptureSession
+        var session: ObjectCaptureSession
 
         var body: some View {
             Button(
@@ -89,8 +90,8 @@ extension CaptureOverlayView {
 
         var body: some View {
             Button(action: {
-                logger.log("\(LocalizedString.next) clicked!")
-                appModel.setPreviewModelState(shown: !appModel.showPreviewModel)
+                logger.log("\(LocalizedString.next) button clicked!")
+                appModel.setPreviewModelState(shown: true)
             },
                    label: {
                 Text(LocalizedString.next)
@@ -101,7 +102,7 @@ extension CaptureOverlayView {
 
     @available(iOS 17.0, *)
     struct ManualShotButton: View {
-        @ObservedObject var session: ObjectCaptureSession
+        var session: ObjectCaptureSession
 
         var body: some View {
             Button(
@@ -170,7 +171,7 @@ extension CaptureOverlayView {
 
         var body: some View {
             Button(action: {
-                logger.log("\(LocalizedString.help) clicked!")
+                logger.log("\(LocalizedString.help) button clicked!")
                 withAnimation {
                     showInfo = true
                 }
@@ -197,7 +198,7 @@ extension CaptureOverlayView {
 
         var body: some View {
             Button(action: {
-                logger.log("\(LocalizedString.cancel) clicked!")
+                logger.log("\(LocalizedString.cancel) button clicked!")
                 appModel.objectCaptureSession?.cancel()
             }, label: {
                 Text(LocalizedString.cancel)
@@ -208,7 +209,7 @@ extension CaptureOverlayView {
 
     @available(iOS 17.0, *)
     struct NumOfImagesButton: View {
-        @ObservedObject var session: ObjectCaptureSession
+        var session: ObjectCaptureSession
 
         var body: some View {
             VStack(spacing: 8) {
@@ -216,7 +217,7 @@ extension CaptureOverlayView {
 
                 Text(String(format: LocalizedString.numOfImages,
                             session.numberOfShotsTaken,
-                            session.maximumNumberOfImagesForLocalReconstruction))
+                            session.maximumNumberOfInputImages))
                 .font(.footnote)
                 .fontWidth(.condensed)
                 .fontDesign(.rounded)

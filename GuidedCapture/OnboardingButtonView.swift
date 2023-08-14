@@ -14,7 +14,7 @@ import os
 /// `currentState` in `onboardingStateMachine`.
 struct OnboardingButtonView: View {
     @EnvironmentObject var appModel: AppDataModel
-    @ObservedObject var session: ObjectCaptureSession
+    var session: ObjectCaptureSession
     @ObservedObject var onboardingStateMachine: OnboardingStateMachine
     @State private var userHasIndicatedObjectCannotBeFlipped: Bool? = nil
     @State private var userHasIndicatedFlipObjectAnyway: Bool? = nil

@@ -85,15 +85,13 @@ class AppDataModel: ObservableObject, Identifiable {
     /// ``objectCaptureSession``.
     @Published private(set) var showPreviewModel = false
 
-    private var subscriptions = Set<AnyCancellable>()
-
-    init(objectCaptureSession: ObjectCaptureSession) {
+    private init(objectCaptureSession: ObjectCaptureSession) {
         self.objectCaptureSession = objectCaptureSession
         state = .ready
     }
 
     // Leaves the model state in ready.
-    init() {
+     private init() {
         state = .ready
     }
 
@@ -134,6 +132,8 @@ class AppDataModel: ObservableObject, Identifiable {
 
     private typealias Feedback = ObjectCaptureSession.Feedback
     private typealias Tracking = ObjectCaptureSession.Tracking
+    
+    private var tasks: [ Task<Void, Never> ] = []
 
     @MainActor
     private func attachListeners() {
@@ -141,25 +141,29 @@ class AppDataModel: ObservableObject, Identifiable {
         guard let model = objectCaptureSession else {
             fatalError("Logic error")
         }
-        model.$feedback
-            .sink(receiveValue: { [weak self] newFeedback in
-                self?.updateFeedbackMessages(for: newFeedback)
-            })
-            .store(in: &subscriptions)
-
-        model.$state
-            .sink(receiveValue: { [weak self] newState in
+        
+        tasks.append(Task<Void, Never> { [weak self] in
+                for await newFeedback in model.feedbackUpdates {
+                    self?.logger.debug("Task got async feedback change to: \(String(describing: newFeedback))")
+                    self?.updateFeedbackMessages(for: newFeedback)
+                }
+                self?.logger.log("^^^ Got nil from stateUpdates iterator!  Ending observation task...")
+        })
+        tasks.append(Task<Void, Never> { [weak self] in
+            for await newState in model.stateUpdates {
+                self?.logger.debug("Task got async state change to: \(String(describing: newState))")
                 self?.onStateChanged(newState: newState)
-            })
-            .store(in: &subscriptions)
+                }
+            self?.logger.log("^^^ Got nil from stateUpdates iterator!  Ending observation task...")
+        })
     }
 
     private func detachListeners() {
         logger.debug("Detaching listeners...")
-        for sub in subscriptions {
-            sub.cancel()
+        for task in tasks {
+            task.cancel()
         }
-        subscriptions = Set<AnyCancellable>()
+        tasks.removeAll()
     }
 
     /// Creates a new object capture session.
@@ -362,28 +366,5 @@ extension AppDataModel {
             value: "Move above your object and capture again.",
             comment: "Guided feedback message for user to move around object again from a higher angle without flipping"
         )
-    }
-}
-
-extension ObjectCaptureSession.CaptureState: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-            case (.initializing, .initializing):
-                return true
-            case (.ready, .ready):
-                return true
-            case (.detecting, .detecting):
-                return true
-            case (.capturing, .capturing):
-                return true
-            case (.finishing, .finishing):
-                return true
-            case (.completed, .completed):
-                return true
-            case (.failed, .failed):
-                return true
-            default:
-                return false
-        }
     }
 }

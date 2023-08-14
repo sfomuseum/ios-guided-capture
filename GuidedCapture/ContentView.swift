@@ -16,7 +16,7 @@ struct ContentView: View {
                                 category: "ContentView")
 
     @StateObject var appModel: AppDataModel = AppDataModel.instance
-
+    
     @State private var showReconstructionView: Bool = false
     @State private var showErrorAlert: Bool = false
     private var showProgressView: Bool {

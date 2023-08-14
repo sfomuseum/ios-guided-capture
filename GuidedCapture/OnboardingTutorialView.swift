@@ -14,7 +14,7 @@ import SwiftUI
 @available(iOS 17.0, *)
 struct OnboardingTutorialView: View {
     @EnvironmentObject var appModel: AppDataModel
-    @ObservedObject var session: ObjectCaptureSession
+    var session: ObjectCaptureSession
     @ObservedObject var onboardingStateMachine: OnboardingStateMachine
 
     var body: some View {

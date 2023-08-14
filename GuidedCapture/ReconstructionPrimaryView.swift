@@ -50,7 +50,6 @@ struct ReconstructionProgressView: View {
     @Binding var completed: Bool
     @Binding var cancelled: Bool
 
-    @State private var session: PhotogrammetrySession!
     @State private var progress: Float = 0
     @State private var estimatedRemainingTime: TimeInterval?
     @State private var processingStageDescription: String?
@@ -119,7 +118,7 @@ struct ReconstructionProgressView: View {
         .task {
             precondition(appModel.state == .reconstructing)
             assert(appModel.photogrammetrySession != nil)
-            session = appModel.photogrammetrySession!
+            let session = appModel.photogrammetrySession!
 
             let outputs = UntilProcessingCompleteFilter(input: session.outputs)
             do {
@@ -165,6 +164,8 @@ struct ReconstructionProgressView: View {
                         appModel.state = .restart
                     case .invalidSample(id: _, reason: _), .skippedSample(id: _), .automaticDownsampling:
                         continue
+                    case .stitchingIncomplete:
+                        break
                     @unknown default:
                         logger.warning("Received an unknown output: \(String(describing: output))")
                 }
