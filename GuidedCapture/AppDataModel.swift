@@ -293,6 +293,26 @@ class AppDataModel: ObservableObject, Identifiable {
                 orbitState = .initial
             case .prepareToReconstruct:
                 // Cleans up the session to free GPU and memory resources.
+            
+                // Pretty sure this can not exist here but this basically
+                // what we want to do...
+            
+                /*
+                .confirmationDialog("Render model on device?",
+                  // isPresented: $isPresentingConfirm) {
+                  Button("Render model") {
+                    
+                 objectCaptureSession = nil
+                 do {
+                     try startReconstruction()
+                 } catch {
+                     logger.error("Reconstructing failed!")
+                 }
+                 
+                   }
+                 }
+                 */
+            
                 objectCaptureSession = nil
                 do {
                     try startReconstruction()
@@ -304,6 +324,22 @@ class AppDataModel: ObservableObject, Identifiable {
             case .viewing:
                 photogrammetrySession = nil
 
+                // Pretty sure this can not exist here but this basically
+                // what we want to do...
+            
+                /*
+                .confirmationDialog("Remove capture data?",
+                  // isPresented: $isPresentingConfirm) {
+                  Button("Delete all capture data") {
+                    
+                    let snapshotsFolder = scanFolderManager.snapshotsFolder
+                    DispatchQueue.global(qos: .background).async {
+                        try? FileManager.default.removeItem(at: snapshotsFolder)
+                    }
+                   }
+                 }
+                 */
+            
                 // Removes snapshots folder to free up space after generating the model.
                 let snapshotsFolder = scanFolderManager.snapshotsFolder
                 DispatchQueue.global(qos: .background).async {
