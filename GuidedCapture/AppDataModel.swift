@@ -307,7 +307,7 @@ class AppDataModel: ObservableObject, Identifiable {
                 // Removes snapshots folder to free up space after generating the model.
                 let snapshotsFolder = scanFolderManager.snapshotsFolder
                 DispatchQueue.global(qos: .background).async {
-                    try? FileManager.default.removeItem(at: snapshotsFolder)
+                    // try? FileManager.default.removeItem(at: snapshotsFolder)
                 }
 
             case .failed:
