@@ -50,7 +50,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		11A35A775A1C348E77CAC709 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		4A3358052B07FB5A00B5603A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7028C8442A33C1F900381BF1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		70D2F6EB2A339DD500EFA0D8 /* GuidedCapture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GuidedCapture.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,14 +106,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4E5B7B31F0C879DE7A0814CD /* LICENSE */ = {
-			isa = PBXGroup;
-			children = (
-				11A35A775A1C348E77CAC709 /* LICENSE.txt */,
-			);
-			path = LICENSE;
-			sourceTree = "<group>";
-		};
 		70D2F6E22A339DD500EFA0D8 = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +113,6 @@
 				70D2F6ED2A339DD500EFA0D8 /* GuidedCapture */,
 				70D2F6EC2A339DD500EFA0D8 /* Products */,
 				C24D33AE1382AF90FD27ABBD /* Configuration */,
-				4E5B7B31F0C879DE7A0814CD /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
@@ -469,7 +459,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.GuidedCapture${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = org.sfomuseum.photogrammety.guidedcapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -510,7 +500,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.GuidedCapture${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = org.sfomuseum.photogrammety.guidedcapture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
