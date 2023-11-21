@@ -18,8 +18,6 @@ struct OnboardingButtonView: View {
     @ObservedObject var onboardingStateMachine: OnboardingStateMachine
     @State private var userHasIndicatedObjectCannotBeFlipped: Bool? = nil
     @State private var userHasIndicatedFlipObjectAnyway: Bool? = nil
-
-    @State private var finishConfirmationShown = false
     
     var body: some View {
         VStack {
@@ -61,9 +59,12 @@ struct OnboardingButtonView: View {
                                  showBusyIndicator: session.state == .finishing,
                                  action: { [weak session] in
                                         
-                                        // START OF custom; needs a dialog or something
-                                        appModel.state = .skipReconstruct
-                                        // END OF custom; needs a dialog or something 
+                                        // START OF custom - needs a dialog or something
+                                        // We expect this to be read in AppDataModel.swift
+                                        // This does not appear to be being honoured though.
+                                        // Dunno...
+                                        // appModel.state = .skipReconstruct
+                                        // END OF custom - needs a dialog or something 
                                         session?.finish()
                                 })
                 }

@@ -14,7 +14,10 @@ extension AppDataModel {
         case notSet
         case ready
         case capturing
-        case skipReconstruct // custom
+        // START OF custom - this is meant to be set in OnboardingButtonView.swift
+        // and read in AppDataModel.swift; it does appear to work though...
+        case skipReconstruct
+        // END OF custom - this is meant to be set in OnboardingButtonView.swift
         case prepareToReconstruct
         case reconstructing
         case viewing

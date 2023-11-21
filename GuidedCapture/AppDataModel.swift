@@ -298,9 +298,12 @@ class AppDataModel: ObservableObject, Identifiable {
             
             // START OF custom - maybe show an alert or something?
             // This state is assigned in OnboardingButtonView.swift
-            if state == .skipReconstruct {
-                state = .restart
-            } else {
+            // However, it does not appear to be being honoured for
+            // reasons I don't understand. For now we'll just disable
+            // it all so as not to confuse things.
+            // if state == .skipReconstruct {
+            //    state = .restart
+            // } else {
             // END OF custom - maybe show an alert or something?
                 
                 do {
@@ -308,33 +311,26 @@ class AppDataModel: ObservableObject, Identifiable {
                 } catch {
                     logger.error("Reconstructing failed!")
                 }
-            }
+            // START OF custom - this wraps the if/else block above
+            // }
+            // END OF custom - this wraps the if/else block above
             
             case .restart, .completed:
                 reset()
             case .viewing:
                 photogrammetrySession = nil
-
-                // Pretty sure this can not exist here but this basically
-                // what we want to do...
-            
-                /*
-                .confirmationDialog("Remove capture data?",
-                  // isPresented: $isPresentingConfirm) {
-                  Button("Delete all capture data") {
-                    
-                    let snapshotsFolder = scanFolderManager.snapshotsFolder
-                    DispatchQueue.global(qos: .background).async {
-                        try? FileManager.default.removeItem(at: snapshotsFolder)
-                    }
-                   }
-                 }
-                 */
             
                 // Removes snapshots folder to free up space after generating the model.
                 let snapshotsFolder = scanFolderManager.snapshotsFolder
                 DispatchQueue.global(qos: .background).async {
+                    
+                    // START OF custom - this needs a confirmation dialog or equivalent (settings panel?)
+                    // It is unclear how/where that confirmation dialog should be invoked since I am
+                    // pretty sure that can't be here. In the meantime we simply disable the removal of
+                    // the snapshotsFolder. A partial improvement might be to remove everything except
+                    // snapshotsFolder/Images. Maybe...
                     // try? FileManager.default.removeItem(at: snapshotsFolder)
+                    // END OF custom - this needs a confirmation dialog or equivalent (settings panel?)
                 }
 
             case .failed:
