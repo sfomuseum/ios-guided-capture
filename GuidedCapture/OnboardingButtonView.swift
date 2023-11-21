@@ -19,6 +19,8 @@ struct OnboardingButtonView: View {
     @State private var userHasIndicatedObjectCannotBeFlipped: Bool? = nil
     @State private var userHasIndicatedFlipObjectAnyway: Bool? = nil
 
+    @State private var finishConfirmationShown = false
+    
     var body: some View {
         VStack {
             HStack {
@@ -57,7 +59,16 @@ struct OnboardingButtonView: View {
                                  buttonLabelColor: onboardingStateMachine.currentState == .thirdSegmentComplete ? .white : .blue,
                                  shouldApplyBackground: onboardingStateMachine.currentState == .thirdSegmentComplete,
                                  showBusyIndicator: session.state == .finishing,
-                                 action: { [weak session] in session?.finish() })
+                                 action: { [weak session] in
+                                        print("OMG")
+                                        session?.finish()
+                                }).confirmationDialog(
+                                    "This is a test?",
+                                    isPresented: $finishConfirmationShown) {
+                                    Button("Do the thing") {
+                                            print("WTF")
+                                    }
+                                }
                 }
                 if currentStateInputs.contains(where: { $0 == .objectCannotBeFlipped }) {
                     CreateButton(buttonLabel: LocalizedString.cannotFlipYourObject,

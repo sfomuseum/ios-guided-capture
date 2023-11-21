@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct GuidedCaptureSampleApp: App {
-    static let subsystem: String = "com.example.apple-samplecode.GuidedCapture"
+    static let subsystem: String = "org.sfomuseum.photogrammetry.guidedcapture"
     
     var body: some Scene {
         WindowGroup {
