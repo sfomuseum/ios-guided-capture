@@ -25,3 +25,8 @@ To run this sample app, you need an iPhone or iPad with the following:
 - An A14 Bionic chip or later
 
 - iOS or iPadOS 17 or later
+
+## See also
+
+* https://github.com/sfomuseum/swift-photogrammetry-render
+* https://github.com/sfomuseum/swift-photogrammetry-render-cli
