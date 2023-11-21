@@ -14,6 +14,7 @@ extension AppDataModel {
         case notSet
         case ready
         case capturing
+        case skipReconstruct // custom
         case prepareToReconstruct
         case reconstructing
         case viewing

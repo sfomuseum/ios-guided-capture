@@ -60,15 +60,12 @@ struct OnboardingButtonView: View {
                                  shouldApplyBackground: onboardingStateMachine.currentState == .thirdSegmentComplete,
                                  showBusyIndicator: session.state == .finishing,
                                  action: { [weak session] in
-                                        print("OMG")
+                                        
+                                        // START OF custom; needs a dialog or something
+                                        appModel.state = .skipReconstruct
+                                        // END OF custom; needs a dialog or something 
                                         session?.finish()
-                                }).confirmationDialog(
-                                    "This is a test?",
-                                    isPresented: $finishConfirmationShown) {
-                                    Button("Do the thing") {
-                                            print("WTF")
-                                    }
-                                }
+                                })
                 }
                 if currentStateInputs.contains(where: { $0 == .objectCannotBeFlipped }) {
                     CreateButton(buttonLabel: LocalizedString.cannotFlipYourObject,

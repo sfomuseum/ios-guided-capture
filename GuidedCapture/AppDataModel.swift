@@ -292,33 +292,24 @@ class AppDataModel: ObservableObject, Identifiable {
             case .capturing:
                 orbitState = .initial
             case .prepareToReconstruct:
-                // Cleans up the session to free GPU and memory resources.
             
-                // Pretty sure this can not exist here but this basically
-                // what we want to do...
+            // Cleans up the session to free GPU and memory resources.
+            objectCaptureSession = nil
             
-                /*
-                .confirmationDialog("Render model on device?",
-                  // isPresented: $isPresentingConfirm) {
-                  Button("Render model") {
-                    
-                 objectCaptureSession = nil
-                 do {
-                     try startReconstruction()
-                 } catch {
-                     logger.error("Reconstructing failed!")
-                 }
-                 
-                   }
-                 }
-                 */
-            
-                objectCaptureSession = nil
+            // START OF custom - maybe show an alert or something?
+            // This state is assigned in OnboardingButtonView.swift
+            if state == .skipReconstruct {
+                state = .restart
+            } else {
+            // END OF custom - maybe show an alert or something?
+                
                 do {
                     try startReconstruction()
                 } catch {
                     logger.error("Reconstructing failed!")
                 }
+            }
+            
             case .restart, .completed:
                 reset()
             case .viewing:
