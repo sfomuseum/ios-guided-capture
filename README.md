@@ -2,6 +2,10 @@
 
 Implement a full scanning workflow for capturing objects on iOS devices.
 
+## Background 
+
+For background, please see the ["Experiments in Photogrammetry"](https://millsfield.sfomuseum.org/blog/2023/11/29/3d/) blog post. 
+
 ## Motivation
 
 This is a fork of Apple's [Scanning objects using Object Capture](https://developer.apple.com/documentation/RealityKit/guided-capture-sample) example application included with WWDC23 session 10191: [Meet Object Capture for iOS](https://developer.apple.com/wwdc23/10191/).
